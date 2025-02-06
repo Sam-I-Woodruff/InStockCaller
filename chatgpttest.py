@@ -14,7 +14,8 @@ client = openai.OpenAI(api_key=API_KEY)
 def chat_with_gpt(prompt):
     response = client.chat.completions.create(
         model="gpt-4o-mini",
-        messages=[{"role": "user", "content": prompt}]
+        messages=[{"role": "user", "content": prompt}],
+        max_tokens=10
     )
     return response.choices[0].message.content
 
