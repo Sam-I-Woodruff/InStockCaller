@@ -2,44 +2,44 @@ import openai
 import os
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
+# Load environment variables from .env file 
 load_dotenv()
 
 # Get API key from environment variables
 API_KEY = os.getenv("OPENAI_API_KEY1")
 
+# Initialize the OpenAI client
 client = openai.OpenAI(api_key=API_KEY)
 
-# Initialize an empty list to store conversation history
+# Initialize a list to keep track of the conversation
 conversation_history = []
 
 def chat_with_gpt(prompt):
-    # Append the new user message to conversation history
+    # Add the user input to the conversation history
     conversation_history.append({"role": "user", "content": prompt})
 
-    # Get the assistant's response, using the full conversation history
+    # Get a response from the GPT model with the entire conversation history
     response = client.chat.completions.create(
-        model="gpt-4o-mini",  # or "gpt-4" if you have access
+        model="gpt-4o-mini",
         messages=conversation_history,
-        max_tokens=20  # Adjust the max_tokens as needed
+        max_tokens=100
     )
 
-    # Extract assistant's reply and append to conversation history
-    assistant_reply = response['choices'][0]['message']['content']  # Corrected line
-    conversation_history.append({"role": "assistant", "content": assistant_reply})
+    # Get the response from the model and add it to the conversation history
+    model_response = response.choices[0].message.content
+    conversation_history.append({"role": "assistant", "content": model_response})
 
-    return assistant_reply
+    return model_response
 
 if __name__ == "__main__":
-    print("Conversation started! (Type 'end' to end)\n")
+    print("Start chatting with GPT! Type 'exit' to end the conversation.")
+    
     while True:
         user_prompt = input("You: ")
-
-        # end condition
-        if user_prompt.lower() == "end":
+        
+        if user_prompt.lower() == 'exit':
             print("Ending conversation.")
             break
-
-        # Get response from ChatGPT and print it
+        
         response = chat_with_gpt(user_prompt)
-        print(f"ChatGPT: {response}\n")
+        print("\nChatGPT: ", response)
