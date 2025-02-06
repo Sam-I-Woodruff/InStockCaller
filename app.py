@@ -106,6 +106,7 @@ def respond_with_audio(file_path):
     """Generates Twilio response with AI-generated speech."""
     response = VoiceResponse()
     response.play(file_path)
+    print(str(response))
     return str(response)
 
 if __name__ == "__main__":
