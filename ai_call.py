@@ -12,7 +12,7 @@ TWILIO_PHONE_NUMBER = os.getenv("TWILIO_PHONE_NUMBER")
 STORE_PHONE_NUMBER = os.getenv("STORE_PHONE_NUMBER")
 
 # Local Flask server URL
-AI_SERVER_URL = "http://127.0.0.1:5000/voice"
+AI_SERVER_URL = os.getenv("AI_SERVER_URL")
 
 def make_ai_call():
     """Initiates an AI-powered call using Twilio."""
