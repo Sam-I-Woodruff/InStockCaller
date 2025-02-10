@@ -1,5 +1,5 @@
 # app.py - AI Agent for Twilio Calls
-from flask import Flask, request
+from flask import Flask, request, make_response
 from twilio.twiml.voice_response import VoiceResponse
 import openai
 import speech_recognition as sr
@@ -24,10 +24,21 @@ ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY")  # Eleven Labs API Key
 app = Flask(__name__)
 recognizer = sr.Recognizer()
 
+@app.route('/')
+def hello():
+    return "Hello from Flask!"
+
+
 @app.route("/voice", methods=["POST"])
 def handle_call():
+    print("Received a POST request on /voice")
     """Handles Twilio call: transcribes speech, generates AI response, and speaks back."""
     audio_url = request.form.get("RecordingUrl")
+
+
+    if not audio_url:
+        return "No audio URL provided", 400  # Error response if no URL found
+
 
     # Convert speech to text
     user_text = transcribe_audio(audio_url)
@@ -110,4 +121,4 @@ def respond_with_audio(file_path):
     return str(response)
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    app.run(debug=True, host = '0.0.0.0', port=5000)
